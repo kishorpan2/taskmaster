@@ -17,6 +17,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	compile 'com.github.derjust:spring-data-dynamodb:5.1.0'
-	compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.585'
+	compile 'com.github.derjust:spring-data-dynamodb:5.0.4'
+	compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.95'
 }
