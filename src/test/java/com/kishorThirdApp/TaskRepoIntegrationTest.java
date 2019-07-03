@@ -47,14 +47,14 @@ public class TaskRepoIntegrationTest {
         dynamoDBMapper.batchDelete((List<TaskInfo>)repository.findAll());
     }
 
-    @Test
-    public void readWriteTestCase() {
-        TaskInfo dave = new TaskInfo(EXPECTED_TITLE, EXPECTED_DESCRIPTION, EXPECTED_STATUS);
-        repository.save(dave);
-
-        List<TaskInfo> result = (List<TaskInfo>) repository.findAll();
-
-        assertTrue("Not empty", result.size() > 0);
-        assertTrue("Contains item with expected TITLE", result.get(0).getTitle().equals(EXPECTED_TITLE));
-    }
+//    @Test
+//    public void readWriteTestCase() {
+//        TaskInfo dave = new TaskInfo(EXPECTED_TITLE, EXPECTED_DESCRIPTION, EXPECTED_STATUS);
+//        repository.save(dave);
+//
+//        List<TaskInfo> result = (List<TaskInfo>) repository.findAll();
+//
+//        assertTrue("Not empty", result.size() > 0);
+//        assertTrue("Contains item with expected TITLE", result.get(0).getTitle().equals(EXPECTED_TITLE));
+//    }
 }
