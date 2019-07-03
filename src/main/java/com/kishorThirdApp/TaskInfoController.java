@@ -19,13 +19,28 @@ public class TaskInfoController {
         return all;
 
     }
-    @PostMapping("/tasks")
-    public void postTask(String title, String description, String status){
-        TaskInfo newUser = new TaskInfo(title, description, status);
-        System.out.println(status + " " + title);
-        System.out.println("******************** " + newUser.getStatus());
-        taskManagerRepo.save(newUser);
+
+    @GetMapping("/users/{name}/tasks")
+    public Iterable<TaskInfo> getAssignee(@PathVariable String name){
+        Iterable<TaskInfo> userAll = taskManagerRepo.findByAssignee(name);
+        return userAll;
     }
+
+
+    @PostMapping("/tasks")
+    public TaskInfo postTask(@RequestParam String title, @RequestParam String description,
+                             @RequestParam(required =false, defaultValue = "") String assignee){
+        TaskInfo newUser;
+        if (assignee.equals("")){
+             newUser = new TaskInfo(title, description);
+            taskManagerRepo.save(newUser);
+        }else{
+            newUser = new TaskInfo(title, description,assignee);
+            taskManagerRepo.save(newUser);
+        }
+      return newUser;
+    }
+
     @PutMapping("/tasks/{id}/state")
     public void putTask(@PathVariable String id) {
         TaskInfo task = taskManagerRepo.findById(id).get();
@@ -38,6 +53,12 @@ public class TaskInfoController {
         }
         taskManagerRepo.save(task);
 
-
+    }
+    @PutMapping("/tasks/{id}/assign/{assignee}")
+    public void putAssignee(@PathVariable String id, @PathVariable String assignee){
+        TaskInfo task = taskManagerRepo.findById(id).get();
+        task.setAssignee(assignee);
+        task.setStatus("Assigned");
+        taskManagerRepo.save(task);
     }
 }
