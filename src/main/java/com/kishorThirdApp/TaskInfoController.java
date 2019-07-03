@@ -21,19 +21,23 @@ public class TaskInfoController {
     }
     @PostMapping("/tasks")
     public void postTask(String title, String description, String status){
-        TaskInfo newUser = new TaskInfo(title, description,status);
+        TaskInfo newUser = new TaskInfo(title, description, status);
+        System.out.println(status + " " + title);
+        System.out.println("******************** " + newUser.getStatus());
         taskManagerRepo.save(newUser);
     }
     @PutMapping("/tasks/{id}/state")
-    public TaskInfo putTask(@PathVariable String id) {
+    public void putTask(@PathVariable String id) {
         TaskInfo task = taskManagerRepo.findById(id).get();
         if (task.getStatus().equals("Available")) {
-            task.setStatus("Assigned");
-        } else if (task.getStatus().equals("Assigned")) {
-            task.setStatus("Accepted");
-        } else if (task.getStatus().equals("Accepted")) {task.setStatus("Completed");
+            task.setStatus("Assigned"); }
+        else if (task.getStatus().equals("Assigned")) {
+            task.setStatus("Accepted"); }
+        else if (task.getStatus().equals("Accepted")) {
+            task.setStatus("Completed");
         }
+        taskManagerRepo.save(task);
 
-    return task;
+
     }
 }

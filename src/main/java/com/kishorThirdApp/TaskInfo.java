@@ -16,7 +16,7 @@ public class TaskInfo {
     public TaskInfo(String title, String description, String status){
         this.title = title;
         this.description = description;
-        this.status= status;
+        this.status = status;
 
     }
 
