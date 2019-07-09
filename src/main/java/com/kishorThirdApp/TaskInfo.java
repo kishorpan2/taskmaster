@@ -9,6 +9,7 @@ public class TaskInfo {
     private String description;
     private String status;
     private String assignee;
+    private String imageUrl;
 
     public TaskInfo(){}
 
@@ -78,5 +79,14 @@ public class TaskInfo {
 
     public void setAssignee(String assignee) {
         this.assignee = assignee;
+    }
+
+    @DynamoDBAttribute
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

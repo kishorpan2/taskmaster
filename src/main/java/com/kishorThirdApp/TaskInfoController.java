@@ -3,6 +3,7 @@ package com.kishorThirdApp;
 import com.amazonaws.services.dynamodbv2.xspec.L;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,16 +11,19 @@ import java.util.UUID;
 @RestController
 public class TaskInfoController {
 
+    private S3Client s3Client;
+
     @Autowired
     TaskManagerRepo taskManagerRepo;
 
-    @GetMapping("/task")
+    @CrossOrigin
+    @GetMapping("/tasks")
     public List<TaskInfo> getTask(){
         List<TaskInfo> all = (List)taskManagerRepo.findAll();
         return all;
 
     }
-
+    @CrossOrigin
     @GetMapping("/users/{name}/tasks")
     public Iterable<TaskInfo> getAssignee(@PathVariable String name){
         Iterable<TaskInfo> userAll = taskManagerRepo.findByAssignee(name);
@@ -60,5 +64,14 @@ public class TaskInfoController {
         task.setAssignee(assignee);
         task.setStatus("Assigned");
         taskManagerRepo.save(task);
+    }
+    @PostMapping("/tasks/{id}/images")
+    public List<TaskInfo> addImages(@PathVariable String id, @RequestParam(value="file")MultipartFile file){
+        TaskInfo selectedTask = taskManagerRepo.findById(id).get();
+        String pic = this.s3Client.uploadFile(file);
+        selectedTask.setImageUrl(pic);
+        taskManagerRepo.save(selectedTask);
+        List<TaskInfo> allTask = (List)taskManagerRepo.findAll();
+        return allTask;
     }
 }
