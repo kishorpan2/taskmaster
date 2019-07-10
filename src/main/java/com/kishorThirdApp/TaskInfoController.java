@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,12 +73,14 @@ public class TaskInfoController {
     }
     @CrossOrigin
     @PostMapping("/tasks/{id}/images")
-    public RedirectView addImages(@PathVariable String id, @RequestPart(value="file")MultipartFile file){
+    public RedirectView addImages(@PathVariable String id, @RequestPart(value="file")MultipartFile file ){
         TaskInfo selectedTask = taskManagerRepo.findById(id).get();
-        String pic = this.s3Client.uploadFile(file);
-        selectedTask.setImageUrl(pic);
+        ArrayList<String> picList = this.s3Client.uploadFile(file);
+        selectedTask.setImageUrl(picList.get(0));
+        selectedTask.setResizedImage(picList.get(1));
         taskManagerRepo.save(selectedTask);
         List<TaskInfo> allTask = (List)taskManagerRepo.findAll();
+       // return new RedirectView("localhost:5000/task");
         return new RedirectView("http://imagebucketer.s3-website-us-east-1.amazonaws.com");
     }
 }
