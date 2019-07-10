@@ -24,10 +24,10 @@ public class S3Client {
     @Value("${amazon.s3.endpoint}")
     private String endpointUrl;
 
-    @Value("${amazon.aws.accesskey}")
+    @Value("${amazon.aws.accesskey.s3}")
     private String accessKey;
 
-    @Value("${amazon.aws.secretkey}")
+    @Value("${amazon.aws.secretkey.s3}")
     private String secretKey;
 
     @Value("${amazon.aws.bucket}")

@@ -4,20 +4,24 @@ import com.amazonaws.services.dynamodbv2.xspec.L;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.UUID;
 
-@RestController
-public class TaskInfoController {
 
+@RestController
+@CrossOrigin
+@RequestMapping("")
+public class TaskInfoController {
+    @Autowired
     private S3Client s3Client;
 
     @Autowired
     TaskManagerRepo taskManagerRepo;
 
     @CrossOrigin
-    @GetMapping("/tasks")
+    @GetMapping("/task")
     public List<TaskInfo> getTask(){
         List<TaskInfo> all = (List)taskManagerRepo.findAll();
         return all;
@@ -30,7 +34,7 @@ public class TaskInfoController {
         return userAll;
     }
 
-
+    @CrossOrigin
     @PostMapping("/tasks")
     public TaskInfo postTask(@RequestParam String title, @RequestParam String description,
                              @RequestParam(required =false, defaultValue = "") String assignee){
@@ -44,7 +48,7 @@ public class TaskInfoController {
         }
       return newUser;
     }
-
+    @CrossOrigin
     @PutMapping("/tasks/{id}/state")
     public void putTask(@PathVariable String id) {
         TaskInfo task = taskManagerRepo.findById(id).get();
@@ -58,6 +62,7 @@ public class TaskInfoController {
         taskManagerRepo.save(task);
 
     }
+    @CrossOrigin
     @PutMapping("/tasks/{id}/assign/{assignee}")
     public void putAssignee(@PathVariable String id, @PathVariable String assignee){
         TaskInfo task = taskManagerRepo.findById(id).get();
@@ -65,13 +70,14 @@ public class TaskInfoController {
         task.setStatus("Assigned");
         taskManagerRepo.save(task);
     }
+    @CrossOrigin
     @PostMapping("/tasks/{id}/images")
-    public List<TaskInfo> addImages(@PathVariable String id, @RequestParam(value="file")MultipartFile file){
+    public RedirectView addImages(@PathVariable String id, @RequestPart(value="file")MultipartFile file){
         TaskInfo selectedTask = taskManagerRepo.findById(id).get();
         String pic = this.s3Client.uploadFile(file);
         selectedTask.setImageUrl(pic);
         taskManagerRepo.save(selectedTask);
         List<TaskInfo> allTask = (List)taskManagerRepo.findAll();
-        return allTask;
+        return new RedirectView("http://imagebucketer.s3-website-us-east-1.amazonaws.com");
     }
 }
