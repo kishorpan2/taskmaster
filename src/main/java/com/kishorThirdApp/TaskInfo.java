@@ -10,6 +10,7 @@ public class TaskInfo {
     private String status;
     private String assignee;
     private String imageUrl;
+    private String resizedImage;
 
     public TaskInfo(){}
 
@@ -88,5 +89,13 @@ public class TaskInfo {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getResizedImage() {
+        return resizedImage;
+    }
+
+    public void setResizedImage(String resizedImage) {
+        this.resizedImage = resizedImage;
     }
 }
