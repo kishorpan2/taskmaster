@@ -19,4 +19,6 @@ dependencies {
 
 	compile 'com.github.derjust:spring-data-dynamodb:5.1.0'
 	compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.585'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.595'
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.595'
 }

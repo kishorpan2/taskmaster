@@ -51,7 +51,7 @@ public class S3Client {
             File file = convertMultiPartToFile(multipartFile);
             String fileName = generateFileName(multipartFile);
             urlList.add(endpointUrl + "/" + fileName);
-            urlList.add(reEndpointUrl+ "/" + "resized-" + fileName);
+            urlList.add(reEndpointUrl + fileName);
             uploadFileTos3bucket(fileName, file);
             file.delete();
         } catch (Exception e) {
